@@ -10,19 +10,19 @@ Token authentication.
 User models in the admin interface include inlines for signup and password reset codes.
 
 # Task API Endpoints
-## POST /task
+### POST /task
 Call this endpoint to create a new task
 
-## GET /task
+### GET /task
 Call this endpoint to get all tasks
 
-## GET /task/:id
+### GET /task/:id
 Call this endpoint to get a task with a specific id
 
-## PATCH /task/:id
+### PATCH /task/:id
 Call this endpoint to update a task with a specific id
 
-## DELETE /task/:id
+### DELETE /task/:id
 Call this endpoint to delete a task with a specific id
 
 
