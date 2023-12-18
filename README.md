@@ -48,7 +48,7 @@ Call this endpoint to log out an authenticated user.
 
 
 # POST /password/reset
-Call this endpoint to send an email to a user so they can reset their password. 
+Call this endpoint to send an email to a user so they can reset their password
 
 
 # GET /password/reset/verify/?code=<code>
