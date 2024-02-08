@@ -6,7 +6,8 @@ The project has made an effort to build a very intuitive and easy-to-use RESTFul
 Defining tasks in `drf-taskmanager-api` is simple and intuitive. You can specify task names and status using a user-friendly syntax. This makes it easy to organize and manage complex projects.
 
 ## Features
-`drf-taskmanager-api` is a task built using Django and Django REST framework. It follows a RESTFul API design architecture and for user signup and authentication it uses third-party package `django-rest-authemail'
+`drf-taskmanager-api` is a task built using Django and Django REST framework. It follows a RESTFul API design architecture and for user signup and authentication it uses third-party package `django-rest-authemail'.
+
 `django-rest-authemail` is a Django/Python application with a RESTful API interface for user signup and authentication. Email addresses are used for authentication, rather than usernames. Because the authentication user model is based on Django's AbstractBaseUser and is itself abstract, the model can be extended without additional database tables. Token authentication allows the API to be accessed from a variety of front ends, including Django, React and AngularJS clients, and iOS and Android mobile apps.
 
 - API endpoints for signup, signup email verification, login, logout, password reset, password reset verification, password change, email change, and user details.
