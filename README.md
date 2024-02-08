@@ -21,6 +21,8 @@ Defining tasks in `drf-taskmanager-api` is simple and intuitive. You can specify
 
 ## Usage
 
+Defining tasks in drf-taskmanager-api is simple and intuitive and makes it easy to organize and manage complex projects.
+
 ### Task API Endpoints
 **POST /task**
 
