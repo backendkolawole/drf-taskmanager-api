@@ -48,7 +48,25 @@ Defining tasks in `drf-taskmanager-api` is simple and intuitive. You can specify
 
 - In the same directory as settings.py, create a file called `.env`
 
-  - Set up the `SECRET_KEY` variable
+  - Generate a secret key and set up the `SECRET_KEY` variable in the .env file
+  - Set up the `DEBUG` variable in the .env file
+  - Include email settings as environment variables or in your project's `settings.py` file.  For example,
+
+```
+mysite/settings.py
+
+import os
+
+
+EMAIL_FROM = env('EMAIL_FROM') or '<YOUR DEFAULT_EMAIL_FROM HERE>'
+EMAIL_BCC = env('EMAIL_BCC') or '<YOUR DEFAULT_EMAIL_BCC HERE>'
+EMAIL_HOST = env('EMAIL_HOST') or 'smtp.gmail.com'
+EMAIL_PORT = env('EMAIL_PORT') or 587
+EMAIL_HOST_USER = env('EMAIL_HOST_USER') or '<YOUR EMAIL_HOST_USER HERE>'
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD') or '<YOUR EMAIL_HOST_PASSWORD HERE>'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+```
 
 > [!WARNING]
 > `SECRET_KEY` is the key to securing signed data – it is vital you keep this secure, or attackers could use it to generate their own signed values.
@@ -61,6 +79,10 @@ Defining tasks in `drf-taskmanager-api` is simple and intuitive. You can specify
 - Apply migrations
 
   ` python manage.py migrate`
+
+- Create a superuser
+
+  `python manage.py createsuperuser`
   
 - Run server
 
@@ -68,18 +90,12 @@ Defining tasks in `drf-taskmanager-api` is simple and intuitive. You can specify
 
 ## Usage
 
-Defining tasks in drf-taskmanager-api is simple and intuitive and makes it easy to organize and manage complex projects.
-
-
 Authemail API Endpoints
 -----------------------
-For the endpoints that follow, the base path is shown as `/api/accounts`.  This path is for example purposes.  It can be customized in your project's `urls.py` file.
 
-**POST /api/accounts/signup**
+**POST [project_url]/signup**
 
-Call this endpoint to sign up a new user and send a verification email.  Sample email templates are found in `authemail/templates/authemail`.  To override the email templates, copy and modify the sample templates, or create your own, in `your_app/templates/authemail`.
-
-Your front end should handle password confirmation, and if desired, require the visitor to input their first and last names.
+Call this endpoint to sign up a new user and send a verification email.  
 
 Unverified users can sign up multiple times, but only the latest signup code will be active.
 
@@ -123,9 +139,9 @@ Content-Type: application/json
 }
 ```
 
-**GET /api/accounts/signup/verify/?code=\<code\>**
+**GET [project_url]/signup/verify/?code=\<code\>**
 
-When the user clicks the link in the verification email, the front end should call this endpoint to verify the user.
+The user clicks the link in the verification email to verify the user.
 
 - Parameters
 
@@ -147,9 +163,9 @@ Content-Type: application/json
 }
 ```
 
-**POST /api/accounts/login**
+**POST [project_url]/login**
 
-Call this endpoint to log in a user.  Use the authentication token in future calls to identify the user.
+Call this endpoint to log in as a user.  Use the authentication token in future calls to identify the user.
 
 - Payload
 
@@ -193,9 +209,9 @@ Content-Type: application/json
 }
 ```
 
-**GET /api/accounts/logout**
+**GET [project_url]/logout**
 
-Call this endpoint to log out an authenticated user.
+Call this endpoint to log out as an authenticated user.
 
 - HTTP Header
 
@@ -223,9 +239,9 @@ Content-Type: application/json
 }
 ```
 
-**POST /api/accounts/password/reset**
+**POST [project_url]/password/reset**
 
-Call this endpoint to send an email to a user so they can reset their password.   Similar to signup verification, the password reset email templates are found in `authemail/templates/authemail`.  Override the default templates by placing your similarly-named templates in `your_app/templates/authemail`.
+Call this endpoint to send an email to a user so they can reset their password.   
 
 - Payload
 
@@ -259,10 +275,9 @@ Content-Type: application/json
 }
 ```
 
-**GET /api/accounts/password/reset/verify/?code=\<code\>**
+**GET [project_url]/password/reset/verify/?code=\<code\>**
 
-When the user clicks the link in the password reset email, call this endpoint
-to verify the password reset code.
+The user clicks the link in the password reset email to verify the password reset code.
 
 - Parameters
 
@@ -290,11 +305,9 @@ Content-Type: application/json
 }
 ```
 
-**POST /api/accounts/password/reset/verified**
+**POST [project_url]/password/reset/verified**
 
-Call this endpoint with the password reset code and the new password, to reset
-the user's password.  The front end should prompt the user for a confirmation
-password and give feedback if the passwords don't match.
+Call this endpoint with the password reset code and the new password, to reset the user's password.  
 
 - Payload
 
@@ -323,13 +336,9 @@ Content-Type: application/json
 }
 ```
 
-**POST /api/accounts/email/change**
+**POST [project_url]/email/change**
 
-Call this endpoint to send a notification email to the previous email address
-and a confirmation email to the new email address.  Similar to signup and
-password reset verification, the email change email templates are found in
-`authemail/templates/authemail`.  Override the default templates by placing
-your similarly-named templates in `your_app/templates/authemail`.
+Call this endpoint to send a notification email to the previous email address and a confirmation email to the new email address.  
 
 - HTTP Header
 
@@ -379,10 +388,9 @@ Content-Type: application/json
 }
 ```
 
-**GET /api/accounts/email/change/verify/?code=\<code\>**
+**GET [project_url]/email/change/verify/?code=\<code\>**
 
-When the user clicks the link in the email change email, call this endpoint to
-verify the email change code and, if appropriate, change the email address.
+Call this endpoint to verify the email change code and, if appropriate, change the email address.
 
 - Parameters
 
@@ -408,7 +416,7 @@ Content-Type: application/json
 }
 ```
 
-**POST /api/accounts/password/change**
+**POST [project]/password/change**
 
 Call this endpoint to change a user's password.
 
@@ -450,7 +458,7 @@ Content-Type: application/json
 }
 ```
 
-**GET /api/accounts/users/me**
+**GET [project_url]/users/me**
 
 Call this endpoint after logging in and obtaining an authorization token to learn more about the user.
 
@@ -484,35 +492,162 @@ Content-Type: application/json
 ```
 
 
-Django Packages
----------------------
-- `django-rest-authemail` can be found on Django Packages at https://djangopackages.org/packages/p/django-rest-authemail/.
-- `django-rest-authemail` can be found in the Django REST Framework Comparison Grid at https://djangopackages.org/grids/g/django-rest-framework/.
+## Task API Endpoints
 
-### Task API Endpoints
-**POST /task**
+Use the authentication token to identify the user.
 
-Call this endpoint to create a new task
+- HTTP Header
+  
+` Authorization: Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b`
 
-**GET /task**
+
+**POST [project_url]/task**
+
+Call this endpoint to create a new task.
+
+Possible responses
+
+```
+
+201 (CREATED)
+
+{
+    "id": 6,
+    "name": "first task",
+    "completed": true
+}
+
+
+400 (Bad Request)
+
+{
+    "name": [
+        "This field is required."
+    ]
+}
+
+
+401 (Unauthorized)
+
+{
+    "detail": "Invalid token."
+}
+```
+
+**GET [project_url]/task**
 
 Call this endpoint to get all tasks
 
-**GET /task/:id**
+- Possible responses
+
+```
+200 (OK)
+
+[
+    {
+        "id": 6,
+        "name": "first task",
+        "completed": true
+    },
+    {
+        "id": 7,
+        "name": "first task",
+        "completed": false
+    }
+]
+
+
+401 (Unauthorized)
+
+{
+    "detail": "Invalid token."
+}
+
+```
+
+**GET [project_url]/tasks/:id**
 
 Call this endpoint to get a task with a specific id
+
+Possible responses
+
+```
+200 (OK)
+
+{
+    "id": 6,
+    "name": "first task",
+    "completed": true
+}
+
+401 (Unauthorized)
+
+{
+    "detail": "Invalid token."
+}
+
+
+404 (Not Found)
+
+{
+    "detail": "Not found."
+}
+
+```
+
 
 **PATCH /task/:id**
 
 Call this endpoint to update a task with a specific id
 
+Possible responses
+
+```
+200 (OK)
+
+{
+    "id": 6,
+    "name": "some task updated",
+    "completed": true
+}
+
+
+401 (Unauthorized)
+
+{
+    "detail": "Invalid token."
+}
+
+
+404 (Not Found)
+
+{
+    "detail": "Not found."
+}
+
+```
+
 **DELETE /task/:id**
 
 Call this endpoint to delete a task with a specific id
 
+Possible responses
 
-**GET /users/me**
+```
+204 (No content)
 
-Call this endpoint after logging in and obtaining an authorization token to learn more about the user
 
-## Contact
+401 (Unauthorized)
+
+{
+    "detail": "Invalid token."
+}
+
+
+404 (Not Found)
+
+{
+    "detail": "Not found."
+}
+
+```
